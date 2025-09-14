@@ -1,0 +1,45 @@
+{
+  "style": {
+    "long_line.py": [
+      "long_line.py: Line 2 Col 80: - E501 line too long (134 > 79 characters)"
+    ],
+    "run_static.py": [
+      "run_static.py: Line 34 Col 80: - E501 line too long (151 > 79 characters)",
+      "run_static.py: Line 42 Col 80: - E501 line too long (97 > 79 characters)",
+      "run_static.py: Line 56 Col 80: - E501 line too long (118 > 79 characters)",
+      "run_static.py: Line 57 Col 80: - E501 line too long (89 > 79 characters)",
+      "run_static.py: Line 62 Col 80: - E501 line too long (114 > 79 characters)",
+      "run_static.py: Line 64 Col 80: - E501 line too long (83 > 79 characters)",
+      "run_static.py: Line 102 Col 80: - E501 line too long (93 > 79 characters)",
+      "run_static.py: Line 118 Col 80: - E501 line too long (81 > 79 characters)",
+      "run_static.py: Line 119 Col 80: - E501 line too long (90 > 79 characters)"
+    ],
+    "subprocess_injection.py": [
+      "subprocess_injection.py: Line 3 Col 1: - E302 expected 2 blank lines, found 1"
+    ],
+    "syntax_error.py": [
+      "syntax_error.py: Line 1 Col 23: - E999 SyntaxError: expected ':'"
+    ],
+    "unused_imports.py": [
+      "unused_imports.py: Line 1 Col 1: - F401 'os' imported but unused",
+      "unused_imports.py: Line 2 Col 1: - F401 'sys' imported but unused",
+      "unused_imports.py: Line 4 Col 1: - E302 expected 2 blank lines, found 1"
+    ]
+  },
+  "security": {
+    "eval_danger.py": [
+      ">> Issue: [B307:blacklist] Use of possibly insecure function - consider using safer ast.literal_eval. | Severity: Medium   Confidence: High | CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html) | More Info: https://bandit.readthedocs.io/en/1.8.6/blacklists/blacklist_calls.html#b307-eval | 1\tdef run_code(user_input): | 2\t    eval(user_input)"
+    ],
+    "hardcoded_password.py": [
+      ">> Issue: [B105:hardcoded_password_string] Possible hardcoded password: '123456' | Severity: Low   Confidence: Medium | CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html) | More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b105_hardcoded_password_string.html | 1\tdef connect(): | 2\t    password = \"123456\" | 3\t    print(\"Connecting with password:\", password)"
+    ],
+    "run_static.py": [
+      ">> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module. | Severity: Low   Confidence: High | CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html) | More Info: https://bandit.readthedocs.io/en/1.8.6/blacklists/blacklist_imports.html#b404-import-subprocess | 1\timport subprocess | 2\timport json | 3\timport sys",
+      ">> Issue: [B603:subprocess_without_shell_equals_true] subprocess call - check for execution of untrusted input. | Severity: Low   Confidence: High | CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html) | More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b603_subprocess_without_shell_equals_true.html | 14\t    try: | 15\t        result = subprocess.run( | 16\t            command, | 17\t            capture_output=True, | 18\t            text=True, | 19\t            encoding=\"utf-8\", | 20\t            errors=\"replace\", | 21\t            check=False | 22\t        ) | 23\t        return result.stdout.strip() or result.stderr.strip()"
+    ],
+    "subprocess_injection.py": [
+      ">> Issue: [B404:blacklist] Consider possible security implications associated with the subprocess module. | Severity: Low   Confidence: High | CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html) | More Info: https://bandit.readthedocs.io/en/1.8.6/blacklists/blacklist_imports.html#b404-import-subprocess | 1\timport subprocess | 2 | 3\tdef run_ls(path):",
+      ">> Issue: [B602:subprocess_popen_with_shell_equals_true] subprocess call with shell=True identified, security issue. | Severity: High   Confidence: High | CWE: CWE-78 (https://cwe.mitre.org/data/definitions/78.html) | More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b602_subprocess_popen_with_shell_equals_true.html | 4\t    command = \"ls \" + path | 5\t    subprocess.call(command, shell=True)"
+    ]
+  }
+}
