@@ -1,34 +1,76 @@
 /* src/components/Upload.css */
 .upload-container {
-    max-width: 600px;
+    max-width: 900px;
     margin: 2rem auto;
     padding: 2rem;
     border: 1px solid #ddd;
     border-radius: 8px;
-}
-
-.upload-form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+}
+
+.upload-options-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    align-items: stretch;
+}
+
+.upload-option {
+    flex: 1;
+    display: flex;
+}
+
+.upload-option form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-weight: bold;
 }
 
 .file-input-group,
-.analysis-type-group {
+.text-input-group {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.file-name {
+    font-style: italic;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: monospace;
+    resize: vertical;
+}
+
+.analysis-type-group.shared {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }
 
 label {
     font-weight: bold;
-}
-
-input[type="file"],
-select {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
 }
 
 button {
