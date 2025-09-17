@@ -1,29 +1,10 @@
 // src/components/Upload.jsx
 import { useState } from 'react';
 import { analyzeCode } from '../services/api';
-import Results from './Results'; // <-- ADD THIS IMPORT
-import './Results.css'; // <-- ADD THIS IMPORT
-/*const MOCK_RESULTS = {
-    summary: { total_issues: 4, critical: 0, high: 1, medium: 1 },
-    static_analysis: {
-        style: [
-            { line: 5, message: "Missing docstring in public module" },
-            { line: 12, message: "Line too long (90/88 characters)" }
-        ],
-        security: [
-            { line: 25, severity: "HIGH", message: "Use of insecure function 'eval'" }
-        ]
-    },
-    ai_analysis: {
-        suggestions: [
-            {
-                title: "Refactor for Readability",
-                description: "The 'calculate_metric' function can be simplified by removing the temporary variable.",
-                code_example: "return (value * factor) + offset"
-            }
-        ]
-    }
-};*/
+import Results from './Results';
+import './Results.css';
+import Loading from './Loading'; // <-- ADD THIS IMPORT
+import './Loading.css';   // <-- ADD THIS IMPORT
 
 function Upload() {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -43,7 +24,7 @@ function Upload() {
         setIsAnalyzing(true);
         setError(null);
         setResults(null);
-
+        // await new Promise(resolve => setTimeout(resolve, 3000));
         try {
             const analysisResults = await analyzeCode(selectedFile, analysisType);
             setResults(analysisResults);
@@ -53,6 +34,14 @@ function Upload() {
             setIsAnalyzing(false);
         }
     };
+
+    // -- NEW LOGIC FROM DAY 5, STEP 3 --
+    // If we are in the "analyzing" state, this will show the
+    // Loading component and stop, preventing the form from rendering.
+    if (isAnalyzing) {
+        return <Loading />;
+    }
+    // -- END OF NEW LOGIC --
 
     return (
         <div className="upload-container">
@@ -91,7 +80,6 @@ function Upload() {
                 </div>
             )}
 
-            {/* This part is now cleaner, just using the Results component */}
             {results && <Results results={results} />}
         </div>
     );
