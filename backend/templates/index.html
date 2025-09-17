@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Code Reviewer MVP</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        textarea { width: 100%; height: 150px; }
+        pre { background: #f4f4f4; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>AI Code Reviewer MVP</h1>
+
+    <label for="language">Select Language:</label>
+    <select id="language">
+        <option value="Python">Python</option>
+        <option value="Java">Java</option>
+    </select>
+
+    <h3>Paste your code:</h3>
+    <textarea id="code"></textarea>
+    <br>
+    <button onclick="analyzeCode()">Analyze</button>
+
+    <h3>Result:</h3>
+    <pre id="result"></pre>
+
+    <script>
+        async function analyzeCode() {
+            const code = document.getElementById('code').value;
+            const language = document.getElementById('language').value;
+
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({code, language})
+            });
+
+            const data = await response.json();
+            document.getElementById('result').textContent = JSON.stringify(data, null, 4);
+        }
+    </script>
+</body>
+</html>
