@@ -1,12 +1,36 @@
-# React + Vite
+# AI Code Reviewer Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is a React-based user interface for an AI-powered code reviewer. It allows users to either **upload a code file** or **paste code directly** into a text field, view a detailed analysis of potential issues, and filter the results.
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To run this project locally, follow these steps:
 
-## Expanding the ESLint configuration
+1.  Navigate into the project directory from the main repository root:
+    `cd frontend-app`
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+2.  Install the necessary dependencies:
+    `npm install`
+
+3.  Start the development server:
+    `npm run dev`
+
+The application will then be available at `http://localhost:5173`.
+
+## Components
+
+The application is built with a component-based architecture. The primary components are:
+
+-   **Upload**: Provides a side-by-side interface for both file selection and pasting code text. It triggers the analysis request to the backend.
+-   **Loading**: A full-page loading indicator with dynamic steps, shown while the analysis is in progress.
+-   **Filters**: Provides dropdown menus to filter and sort the analysis results by type, severity, and line number.
+-   **Results**: Displays the formatted analysis results, including a dynamic summary, headlines for each category, and a list of all findings.
+-   **FindingDetail**: A modal pop-up that shows detailed information for a single issue when clicked.
+
+## API Integration
+
+The frontend communicates with a backend server to perform the code analysis.
+
+-   It sends a `POST` request containing the code file (either uploaded or from pasted text) and analysis type to the `/analyze` endpoint.
+-   It is built to handle a JSON object in response, which contains the analysis results broken down by static analysis and AI suggestions.
+-   It features robust error handling, including toast notifications and a "Retry" mechanism for failed requests.
