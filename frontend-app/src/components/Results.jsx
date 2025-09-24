@@ -1,13 +1,17 @@
 // src/components/Results.jsx
-function Results({ results }) {
+
+function Results({ results, onFindingSelect }) {
     if (!results) return null;
 
     const { static_analysis, ai_analysis, summary } = results;
+
+    const enhanceFinding = (finding, type) => ({ ...finding, type });
 
     return (
         <div className="results-container">
             <h3>Analysis Results</h3>
 
+            {/* The full summary section is included here */}
             {summary && (
                 <div className="summary">
                     <h4>Summary</h4>
@@ -20,29 +24,29 @@ function Results({ results }) {
                 <div className="static-results">
                     <h4>Static Analysis</h4>
                     <div className="findings">
-                        {static_analysis.style && static_analysis.style.length > 0 && (
-                            <div className="style-issues">
-                                <h5>Style Issues</h5>
-                                {static_analysis.style.map((issue, index) => (
-                                    <div key={index} className="issue-item">
-                                        <span className="line">Line {issue.line}:</span>
-                                        <span className="message">{issue.message}</span>
-                                    </div>
-                                ))}
+                        {static_analysis.style?.map((issue, index) => (
+                            <div
+                                key={index}
+                                className="issue-item"
+                                // The new onClick handler from Day 7
+                                onClick={() => onFindingSelect(enhanceFinding(issue, 'Style'))}
+                            >
+                                <span className="line">Line {issue.line}:</span>
+                                <span className="message">{issue.message}</span>
                             </div>
-                        )}
-                        {static_analysis.security && static_analysis.security.length > 0 && (
-                            <div className="security-issues">
-                                <h5>Security Issues</h5>
-                                {static_analysis.security.map((issue, index) => (
-                                    <div key={index} className="issue-item security">
-                                        <span className="severity">{issue.severity}</span>
-                                        <span className="line">Line {issue.line}:</span>
-                                        <span className="message">{issue.message}</span>
-                                    </div>
-                                ))}
+                        ))}
+                        {static_analysis.security?.map((issue, index) => (
+                            <div
+                                key={index}
+                                className="issue-item security"
+                                // The new onClick handler from Day 7
+                                onClick={() => onFindingSelect(enhanceFinding(issue, 'Security'))}
+                            >
+                                <span className="severity">{issue.severity}</span>
+                                <span className="line">Line {issue.line}:</span>
+                                <span className="message">{issue.message}</span>
                             </div>
-                        )}
+                        ))}
                     </div>
                 </div>
             )}
@@ -51,8 +55,13 @@ function Results({ results }) {
                 <div className="ai-results">
                     <h4>AI Suggestions</h4>
                     <div className="ai-findings">
-                        {ai_analysis.suggestions && ai_analysis.suggestions.map((suggestion, index) => (
-                            <div key={index} className="ai-suggestion">
+                        {ai_analysis.suggestions?.map((suggestion, index) => (
+                            <div
+                                key={index}
+                                className="ai-suggestion"
+                                // The new onClick handler from Day 7
+                                onClick={() => onFindingSelect(enhanceFinding(suggestion, 'AI Suggestion'))}
+                            >
                                 <h6>{suggestion.title}</h6>
                                 <p>{suggestion.description}</p>
                                 {suggestion.code_example && (

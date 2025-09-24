@@ -3,9 +3,11 @@ import { useState, useMemo } from 'react';
 import Upload from './components/Upload';
 import Results from './components/Results';
 import Filters from './components/Filters';
+import FindingDetail from './components/FindingDetail';
 import './components/Upload.css';
 import './components/Results.css';
 import './components/Filters.css';
+import './components/FindingDetail.css';
 /*const MOCK_RESULTS = {
   summary: { total_issues: 4, critical: 0, high: 1, medium: 1 },
   static_analysis: {
@@ -30,34 +32,34 @@ import './components/Filters.css';
 function App() {
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
+  // This line is now corrected
   const [filters, setFilters] = useState({
     severity: 'all',
     type: 'all',
     sortBy: 'line'
   });
+  const [selectedFinding, setSelectedFinding] = useState(null);
 
-  // This function is passed down to the Upload component
   const handleAnalysisComplete = (analysisResults, analysisError) => {
     setResults(analysisResults);
     setError(analysisError);
   };
 
-  // This function is passed down to the Filters component
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
   };
 
-  // This logic runs whenever results or filters change
+  const handleFindingSelect = (finding) => {
+    setSelectedFinding(finding);
+  };
+
+  const handleCloseDetail = () => {
+    setSelectedFinding(null);
+  };
+
   const filteredResults = useMemo(() => {
     if (!results) return null;
-
-    // This is a deep copy to avoid modifying the original results
-    const newResults = JSON.parse(JSON.stringify(results));
-
-    // Filtering logic will go here in future steps, for now, we just pass it through
-
-    return newResults;
-
+    return JSON.parse(JSON.stringify(results));
   }, [results, filters]);
 
   return (
@@ -73,9 +75,17 @@ function App() {
       {filteredResults && (
         <>
           <Filters onFilterChange={handleFilterChange} />
-          <Results results={filteredResults} />
+          <Results
+            results={filteredResults}
+            onFindingSelect={handleFindingSelect}
+          />
         </>
       )}
+
+      <FindingDetail
+        finding={selectedFinding}
+        onClose={handleCloseDetail}
+      />
     </div>
   );
 }
