@@ -1,17 +1,14 @@
 // src/components/Upload.jsx
 import { useState } from 'react';
 import { analyzeCode } from '../services/api';
-import Results from './Results';
-import './Results.css';
-import Loading from './Loading'; // <-- ADD THIS IMPORT
-import './Loading.css';   // <-- ADD THIS IMPORT
+import Loading from './Loading';
+import './Loading.css';
 
-function Upload() {
+// Now receives a function `onAnalysisComplete` as a prop
+function Upload({ onAnalysisComplete }) {
     const [selectedFile, setSelectedFile] = useState(null);
     const [analysisType, setAnalysisType] = useState('all');
     const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [results, setResults] = useState(null);
-    const [error, setError] = useState(null);
 
     const handleFileSelect = (event) => {
         setSelectedFile(event.target.files[0]);
@@ -22,26 +19,24 @@ function Upload() {
         if (!selectedFile) return;
 
         setIsAnalyzing(true);
-        setError(null);
-        setResults(null);
-        // await new Promise(resolve => setTimeout(resolve, 3000));
+        // We call the parent with `null` results and `null` error to clear old state
+        onAnalysisComplete(null, null);
+
         try {
             const analysisResults = await analyzeCode(selectedFile, analysisType);
-            setResults(analysisResults);
+            // Report success to the parent!
+            onAnalysisComplete(analysisResults, null);
         } catch (err) {
-            setError('Analysis failed. Please try again.');
+            // Report failure to the parent!
+            onAnalysisComplete(null, 'Analysis failed. Please try again.');
         } finally {
             setIsAnalyzing(false);
         }
     };
 
-    // -- NEW LOGIC FROM DAY 5, STEP 3 --
-    // If we are in the "analyzing" state, this will show the
-    // Loading component and stop, preventing the form from rendering.
     if (isAnalyzing) {
         return <Loading />;
     }
-    // -- END OF NEW LOGIC --
 
     return (
         <div className="upload-container">
@@ -70,17 +65,9 @@ function Upload() {
                     </select>
                 </div>
                 <button type="submit" disabled={!selectedFile || isAnalyzing}>
-                    {isAnalyzing ? 'Analyzing...' : 'Analyze Code'}
+                    Analyze Code
                 </button>
             </form>
-
-            {error && (
-                <div className="error-message" style={{ color: 'red', marginTop: '1rem' }}>
-                    {error}
-                </div>
-            )}
-
-            {results && <Results results={results} />}
         </div>
     );
 }
